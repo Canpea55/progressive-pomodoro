@@ -10,7 +10,8 @@ public class SettingManager : MonoBehaviour
 {
     public FramerateManager fpsManager;
     public Timer timer;
-    [Space]
+    public GameObject cabbageFactoryObj;
+    [Header("settings")]
     public Slider volume;
     public TMP_InputField startDuration;
     public TMP_InputField restTime;
@@ -19,6 +20,7 @@ public class SettingManager : MonoBehaviour
     public TMP_InputField targetFPS;
     public Toggle noSecond;
     public Toggle plantMode;
+    public Toggle cabbageFactory;
 
     private void Start()
     {
@@ -47,6 +49,7 @@ public class SettingManager : MonoBehaviour
 
         //Optionals
         PlayerPrefs.SetInt("plantMode", plantMode.isOn ? 1 : 0);
+        PlayerPrefs.SetInt("cabbageFactory", plantMode.isOn ? 1 : 0);
 
         PlayerPrefs.Save();
         Debug.Log("SavePref");
@@ -69,6 +72,7 @@ public class SettingManager : MonoBehaviour
 
         //optionals
         plantMode.isOn = Int2Bool(PlayerPrefs.GetInt("plantMode"));
+        plantMode.isOn = Int2Bool(PlayerPrefs.GetInt("cabbageFactory"));
 
         Debug.Log("LoadPref");
     }
@@ -128,5 +132,6 @@ public class SettingManager : MonoBehaviour
 
         //Optionals
         timer.plant = plantMode.isOn;
+        cabbageFactoryObj.SetActive(cabbageFactory.isOn);
     }
 }

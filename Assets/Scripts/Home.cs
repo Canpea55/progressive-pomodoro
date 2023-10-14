@@ -28,7 +28,13 @@ public class Home : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape)) ToggleSetting();
+        switch (Input.GetKeyDown(KeyCode.Escape)) { case true: ToggleSetting(); break; }
+        switch(startScreen.enabled)
+        {
+            case true:
+                switch (Input.GetKeyDown(KeyCode.Space)) { case true: StartTimer(); break; }
+                break;
+        }
     }
 
     public void StartTimer()

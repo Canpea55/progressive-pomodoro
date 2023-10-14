@@ -29,6 +29,12 @@ public class Timer : MonoBehaviour
     public GameObject DefaultMode;
 
     [Space]
+    public UnityEngine.UI.Button badButton;
+    public UnityEngine.UI.Button hardButton;
+    public UnityEngine.UI.Button goodButton;
+    public UnityEngine.UI.Button greatButton;
+
+    [Space]
     public GameObject[] ratingIndicator = new GameObject[4];
     public int indicatorShowDuration = 1;
     bool showingIndicator = false;
@@ -208,10 +214,10 @@ public class Timer : MonoBehaviour
     {
         if(ratingScreen_Canvas.enabled)
         {
-            if (Input.GetKeyDown(KeyCode.Alpha1)) NextSession("bad");
-            if (Input.GetKeyDown(KeyCode.Alpha2)) NextSession("hard");
-            if (Input.GetKeyDown(KeyCode.Alpha3)) NextSession("good");
-            if (Input.GetKeyDown(KeyCode.Alpha4)) NextSession("great");
+            if (Input.GetKeyDown(KeyCode.Alpha1)) badButton.onClick.Invoke();
+            if (Input.GetKeyDown(KeyCode.Alpha2)) hardButton.onClick.Invoke();
+            if (Input.GetKeyDown(KeyCode.Alpha3)) goodButton.onClick.Invoke();
+            if (Input.GetKeyDown(KeyCode.Alpha4)) greatButton.onClick.Invoke();
         }
         if(timerScreen_Canvas.enabled)
         {
