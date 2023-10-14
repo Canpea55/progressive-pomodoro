@@ -10,6 +10,9 @@ public class Home : MonoBehaviour
     Canvas timerScreen;
     Canvas ratingScreen;
     Canvas settingScreen;
+    
+    [Space]
+    public GameObject surprise;
 
     float delay;
     float delayAmout = 0.1f;
@@ -53,6 +56,8 @@ public class Home : MonoBehaviour
         timerScreen.enabled = true;
         timer.ResetTimer();
         timer.ToggleTimer(Timer.State.focus);
+
+        surprise.SetActive(false);
     }
 
     public void ReturnHome()
@@ -62,6 +67,13 @@ public class Home : MonoBehaviour
         timerScreen.enabled = false;
         ratingScreen.enabled = false;
         settingScreen.enabled = false;
+
+        switch (KinEvent.theDay)
+        {
+            case true:
+                surprise.SetActive(true);
+                break;
+        }
     }
 
     public void ToggleSetting()
