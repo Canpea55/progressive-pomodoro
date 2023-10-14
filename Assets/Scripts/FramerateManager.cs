@@ -21,6 +21,8 @@ public class FramerateManager : MonoBehaviour
 
     void Update()
     {
+        if(Application.targetFrameRate != targetFPS) Application.targetFrameRate = targetFPS;
+
         if ((Input.anyKey || Input.mouseScrollDelta != new Vector2(0,0)) || (Input.touchCount > 0))
         {
             lastInterection = interactionInterval;

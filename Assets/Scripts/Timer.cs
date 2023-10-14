@@ -122,7 +122,10 @@ public class Timer : MonoBehaviour
 
     void UpdateUI(TimeSpan time)
     {
-        switch(plant)
+        switch (currentStateText_Default.IsActive()) { case true: currentStateText_Default.text = currentState.ToString(); break; }
+        switch (currentStateText_Plant.IsActive()) { case true: currentStateText_Plant.text = currentState.ToString(); break; }
+
+        switch (plant)
         {
             case true:
                 PlantMode.SetActive(true);
@@ -134,20 +137,26 @@ public class Timer : MonoBehaviour
                 DefaultMode.SetActive(true);
                 currentTimeText.gameObject.SetActive(true);
 
-                switch (noSecond)
+                switch(currentState != State.pause)
                 {
                     case true:
-                        currentTimeText.text = time.Hours.ToString("00") + ":" + time.Minutes.ToString("00");
+                        switch (noSecond)
+                        {
+                            case true:
+                                currentTimeText.text = time.Hours.ToString("00") + ":" + time.Minutes.ToString("00");
+                                break;
+                            case false:
+                                currentTimeText.text = time.Hours.ToString("00") + ":" + time.Minutes.ToString("00") + ":" + time.Seconds.ToString("00");
+                                break;
+                        }
                         break;
                     case false:
-                        currentTimeText.text = time.Hours.ToString("00") + ":" + time.Minutes.ToString("00") + ":" + time.Seconds.ToString("00");
+                        currentTimeText.text = "Pause";
+                        currentStateText_Default.text = "I'm waiting.";
                         break;
                 }
                 break;
         }
-
-        if(currentStateText_Default.IsActive()) currentStateText_Default.text = currentState.ToString();
-        if(currentStateText_Plant.IsActive()) currentStateText_Plant.text = currentState.ToString();
     }
 
     public void ToggleTimer()
