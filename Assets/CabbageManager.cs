@@ -8,9 +8,12 @@ public class CabbageManager : MonoBehaviour
     [Space]
     public GameObject[] spawnPoints;
     public GameObject group;
+    public List<GameObject> lastAdded;
 
     public void SpawnCabbage(int amount)
     {
+        lastAdded.Clear();
+
         int cabbageColor;
         switch(amount)
         {
@@ -34,7 +37,16 @@ public class CabbageManager : MonoBehaviour
         for(int i = amount; i > 0; i--)
         {
             int spawnpoint = Random.Range(0, spawnPoints.Length - 1);
-            Instantiate(cabbagePrefab[cabbageColor], spawnPoints[spawnpoint].transform.position, spawnPoints[spawnpoint].transform.rotation, spawnPoints[spawnpoint].transform);
+            lastAdded.Add(Instantiate(cabbagePrefab[cabbageColor], spawnPoints[spawnpoint].transform.position, spawnPoints[spawnpoint].transform.rotation, spawnPoints[spawnpoint].transform));
         }
+    }
+
+    public void UndoCabbage()
+    {
+        for(int i = 0; i < lastAdded.Count; i++)
+        {
+            Destroy(lastAdded[i]);
+        }
+        lastAdded.Clear();
     }
 }

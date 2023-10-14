@@ -12,6 +12,8 @@ public class Timer : MonoBehaviour
     public SettingManager settingManager;
     [SerializeField] float currentTime; 
     public float sessionDuration;
+    public float previousDuration;
+    public int sessionCount = 0;
     public TMP_Text currentTimeText;
     public TMP_Text currentStateText_Default;
     public TMP_Text currentStateText_Plant;
@@ -27,6 +29,7 @@ public class Timer : MonoBehaviour
     public GameObject settingScreen;
     public GameObject PlantMode;
     public GameObject DefaultMode;
+    public CabbageManager cabbageManager;
 
     [Space]
     public UnityEngine.UI.Button badButton;
@@ -71,6 +74,7 @@ public class Timer : MonoBehaviour
     {
         currentTime = startDuration;
         sessionDuration = currentTime;
+        previousDuration = sessionDuration;
 
         GetComponent();
     }
@@ -95,6 +99,7 @@ public class Timer : MonoBehaviour
                         ratingScreen_Result.UpdateResult();
                         timerScreen_Canvas.enabled = false;
                         ratingScreen_Canvas.enabled = true;
+                        previousDuration = sessionDuration;
                     }
                     break;
                 }
@@ -194,6 +199,7 @@ public class Timer : MonoBehaviour
         currentState = State.pause;
         currentTime = startDuration;
         sessionDuration = currentTime;
+        sessionCount = 0;
     }
     public void ResetTimer(float nextTime)
     {
@@ -201,6 +207,7 @@ public class Timer : MonoBehaviour
         currentState = State.pause;
         currentTime = nextTime;
         sessionDuration = currentTime;
+        sessionCount = 0;
     }
 
     void Continue(State state)
@@ -210,18 +217,38 @@ public class Timer : MonoBehaviour
         ToggleTimer(state);
         alarmer.StopSound();
     }
+
+    void UndoTimer()
+    {
+        sessionDuration = previousDuration;
+        ToggleTimer();
+        cabbageManager.UndoCabbage();
+
+        ratingScreen_Result.UpdateResult();
+        timerScreen_Canvas.enabled = false;
+        ratingScreen_Canvas.enabled = true;
+    }    
+
     void UpdateShortcut()
     {
+        if(timerScreen_Canvas.enabled)
+        {
+            if (Input.GetKeyDown(KeyCode.Space)) ToggleTimer();
+
+            if(Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.Z))
+            {
+                if(sessionCount > 0)
+                {
+                    UndoTimer();
+                }
+            }
+        }
         if(ratingScreen_Canvas.enabled)
         {
             if (Input.GetKeyDown(KeyCode.Alpha1)) badButton.onClick.Invoke();
             if (Input.GetKeyDown(KeyCode.Alpha2)) hardButton.onClick.Invoke();
-            if (Input.GetKeyDown(KeyCode.Alpha3)) goodButton.onClick.Invoke();
+            if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Space)) goodButton.onClick.Invoke();
             if (Input.GetKeyDown(KeyCode.Alpha4)) greatButton.onClick.Invoke();
-        }
-        if(timerScreen_Canvas.enabled)
-        {
-            if (Input.GetKeyDown(KeyCode.Space)) ToggleTimer();
         }
     }
 
@@ -303,5 +330,6 @@ public class Timer : MonoBehaviour
                     break;
                 }
         }
+        sessionCount++;
     }
 }

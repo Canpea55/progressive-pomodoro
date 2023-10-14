@@ -485,6 +485,7 @@ MonoBehaviour:
   - {fileID: 1949232546}
   - {fileID: 2060178903}
   group: {fileID: 0}
+  lastAdded: []
 --- !u!1 &90595737
 GameObject:
   m_ObjectHideFlags: 0
@@ -13039,6 +13040,8 @@ MonoBehaviour:
   settingManager: {fileID: 1655234303}
   currentTime: 0
   sessionDuration: 0
+  previousDuration: 0
+  sessionCount: 0
   currentTimeText: {fileID: 1724080565}
   currentStateText_Default: {fileID: 1029414702}
   currentStateText_Plant: {fileID: 421924125}
@@ -13051,6 +13054,7 @@ MonoBehaviour:
   settingScreen: {fileID: 1655234298}
   PlantMode: {fileID: 796705866}
   DefaultMode: {fileID: 1167647520}
+  cabbageManager: {fileID: 70373196}
   badButton: {fileID: 1613209507}
   hardButton: {fileID: 841264577}
   goodButton: {fileID: 734770330}
