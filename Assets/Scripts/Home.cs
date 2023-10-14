@@ -14,9 +14,6 @@ public class Home : MonoBehaviour
     [Space]
     public GameObject surprise;
 
-    float delay;
-    float delayAmout = 0.1f;
-
     bool pauseBeforeSetting = false;
 
     void Start()
@@ -31,23 +28,7 @@ public class Home : MonoBehaviour
 
     private void Update()
     {
-        if(delay > 0)
-        {
-            delay -= Time.deltaTime;
-        }
-        else
-        {
-            delay = 0;
-
-            if(Input.GetKeyDown(KeyCode.Escape))
-            {
-                delay = delayAmout;
-                if(startScreen.enabled == true) Application.Quit();
-                else ToggleSetting();
-
-                if(startScreen.enabled == true && settingScreen.enabled == true) ToggleSetting();
-            }
-        }
+        if(Input.GetKeyDown(KeyCode.Escape)) ToggleSetting();
     }
 
     public void StartTimer()
