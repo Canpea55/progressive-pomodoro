@@ -20,7 +20,7 @@ public class Result : MonoBehaviour
         TimeSpan[] nextTime = new TimeSpan[4];
         nextTime[0] = TimeSpan.FromSeconds(timer.sessionDuration / timer.badDivider);
         nextTime[1] = TimeSpan.FromSeconds(timer.sessionDuration / timer.hardDivider);
-        nextTime[2] = TimeSpan.FromSeconds(timer.sessionDuration * timer.goodMultiplier);
+        nextTime[2] = TimeSpan.FromSeconds(timer.sessionDuration);
         nextTime[3] = TimeSpan.FromSeconds(timer.sessionDuration * timer.greatMultiplier);
 
         for(int i = 0; i < nextTime.Length; i++)

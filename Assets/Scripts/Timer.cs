@@ -1,11 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using TMPro;
-using UnityEngine.UI;
-using System;
-using UnityEngine.UIElements;
 using System.Xml.Serialization;
+using UnityEngine;
+using UnityEngine.UIElements;
+using UnityEngine.UI;
+using TMPro;
 
 public class Timer : MonoBehaviour
 {
@@ -51,8 +51,8 @@ public class Timer : MonoBehaviour
     public bool noSecond = false;
     public bool plant = false;
     [Header("Algorithm")]
-    public float greatMultiplier = 3;
-    public float goodMultiplier = 2;
+    public float greatMultiplier = 2;
+    public float goodMultiplier = 1;
     public float hardDivider = 2;
     public float badDivider = 4;
 
@@ -79,6 +79,18 @@ public class Timer : MonoBehaviour
         GetComponent();
     }
 
+    private void OnApplicationFocus(bool focus)
+    {
+        if(currentState == State.focus || currentState == State.rest)
+        {
+            switch (focus)
+            {
+                case false:
+                    AutoResize.MinimizeWindow();
+                    break;
+            }
+        }
+    }
 
     void Update()
     {
@@ -95,6 +107,7 @@ public class Timer : MonoBehaviour
                     {
                         ToggleTimer();
                         alarmer.PlaySound("alarm");
+                        AutoResize.ShowWindow();
 
                         ratingScreen_Result.UpdateResult();
                         timerScreen_Canvas.enabled = false;
@@ -110,6 +123,7 @@ public class Timer : MonoBehaviour
                     {
                         ToggleTimer();
                         alarmer.PlaySound("restend");
+                        AutoResize.ShowWindow();
                         currentTime = sessionDuration;
                         currentState = State.focus;
                     }
@@ -283,6 +297,7 @@ public class Timer : MonoBehaviour
                 {
                     float next = sessionDuration / badDivider;
                     if (next < minTime) ResetTimer(minTime);
+                    else if (next > maxTime) ResetTimer(maxTime);
                     else ResetTimer(next);
 
                     currentTime = restTime;
@@ -298,19 +313,15 @@ public class Timer : MonoBehaviour
                     if (next < minTime) ResetTimer(minTime);
                     else ResetTimer(next);
 
-                    currentTime = restTime;
-
                     Debug.Log(previousSession);
                     ShowIndicator(1);
-                    Continue(State.rest);
+                    Continue(State.focus);
                     break;
                 }
             case Rating.good:
                 {
-                    float next = sessionDuration * goodMultiplier;
-                    if (next < minTime) ResetTimer(minTime);
-                    else if (next > maxTime) ResetTimer(maxTime);
-                    else ResetTimer(next);
+                    float next = sessionDuration;
+                    ResetTimer(next);
 
                     Debug.Log(previousSession);
                     ShowIndicator(2);
@@ -320,8 +331,7 @@ public class Timer : MonoBehaviour
             case Rating.great:
                 {
                     float next = sessionDuration * greatMultiplier;
-                    if (next < minTime) ResetTimer(minTime);
-                    else if (next > maxTime) ResetTimer(maxTime);
+                    if (next > maxTime) ResetTimer(maxTime);
                     else ResetTimer(next);
 
                     Debug.Log(previousSession);
