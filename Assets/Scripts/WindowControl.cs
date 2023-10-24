@@ -8,9 +8,10 @@ using System.Text;
 using UnityEngine;
 using Unity.VisualScripting;
 
-public class AutoResize : MonoBehaviour
+public class WindowControl : MonoBehaviour
 {
     static bool windowFocus;
+    public static bool enabled = true;
 
     [RuntimeInitializeOnLoadMethod]
     private static void MaximizeWindowOnStart()
@@ -62,17 +63,20 @@ public class AutoResize : MonoBehaviour
 
     public static void ShowWindow()
     {
-        switch(windowFocus)
+        if(enabled)
         {
-            case false:
-                ShowWindowAsync(thisWindow, (int)SW.RESTORE);
-                break;
+            switch(windowFocus)
+            {
+                case false:
+                    ShowWindowAsync(thisWindow, (int)SW.RESTORE);
+                    break;
+            }
         }
     }
 
     public static void MinimizeWindow()
     {
-        ShowWindowAsync(thisWindow, (int)SW.SHOWMINIMIZED);
+        if (enabled) ShowWindowAsync(thisWindow, (int)SW.SHOWMINIMIZED);
     }
 
     static bool MaximizeWindow(int handle)

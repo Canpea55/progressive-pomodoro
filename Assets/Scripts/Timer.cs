@@ -86,7 +86,7 @@ public class Timer : MonoBehaviour
             switch (focus)
             {
                 case false:
-                    AutoResize.MinimizeWindow();
+                    WindowControl.MinimizeWindow();
                     break;
             }
         }
@@ -107,7 +107,7 @@ public class Timer : MonoBehaviour
                     {
                         ToggleTimer();
                         alarmer.PlaySound("alarm");
-                        AutoResize.ShowWindow();
+                        WindowControl.ShowWindow();
 
                         ratingScreen_Result.UpdateResult();
                         timerScreen_Canvas.enabled = false;
@@ -123,7 +123,7 @@ public class Timer : MonoBehaviour
                     {
                         ToggleTimer();
                         alarmer.PlaySound("restend");
-                        AutoResize.ShowWindow();
+                        WindowControl.ShowWindow();
                         currentTime = sessionDuration;
                         currentState = State.focus;
                     }
@@ -311,6 +311,7 @@ public class Timer : MonoBehaviour
                 {
                     float next = sessionDuration / hardDivider;
                     if (next < minTime) ResetTimer(minTime);
+                    else if (next > maxTime) ResetTimer(maxTime);
                     else ResetTimer(next);
 
                     Debug.Log(previousSession);
@@ -320,8 +321,10 @@ public class Timer : MonoBehaviour
                 }
             case Rating.good:
                 {
-                    float next = sessionDuration;
-                    ResetTimer(next);
+                    float next = sessionDuration * goodMultiplier;
+                    if (next < minTime) ResetTimer(minTime);
+                    else if (next > maxTime) ResetTimer(maxTime);
+                    else ResetTimer(next);
 
                     Debug.Log(previousSession);
                     ShowIndicator(2);
@@ -331,7 +334,8 @@ public class Timer : MonoBehaviour
             case Rating.great:
                 {
                     float next = sessionDuration * greatMultiplier;
-                    if (next > maxTime) ResetTimer(maxTime);
+                    if (next < minTime) ResetTimer(minTime);
+                    else if (next > maxTime) ResetTimer(maxTime);
                     else ResetTimer(next);
 
                     Debug.Log(previousSession);

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7539506254819541550}
   - component: {fileID: 5352189783990880846}
   - component: {fileID: 4081109382242954708}
+  - component: {fileID: 5116727493151944433}
   m_Layer: 0
   m_Name: CabbageGreen
   m_TagString: Untagged
@@ -148,3 +149,19 @@ CircleCollider2D:
   m_Offset: {x: 0.04, y: -0.03}
   serializedVersion: 2
   m_Radius: 0.35
+--- !u!114 &5116727493151944433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7162092257902042264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfde8c3f9935fa9418ec89e98cd1850f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minX: -500
+  maxX: 500
+  minY: -200
+  maxY: 200

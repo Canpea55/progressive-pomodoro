@@ -17,6 +17,14 @@ public class SettingManager : MonoBehaviour
     public TMP_InputField restTime;
     public TMP_InputField maxTime;
     public TMP_InputField minTime;
+    [Space]
+    public TMP_InputField badValue;
+    public TMP_InputField hardValue;
+    public TMP_InputField goodValue;
+    public TMP_InputField greatValue;
+    [Space]
+    public Toggle windowAutoControl;
+    [Space]
     public TMP_InputField targetFPS;
     public Toggle noSecond;
     public Toggle plantMode;
@@ -43,6 +51,13 @@ public class SettingManager : MonoBehaviour
         PlayerPrefs.SetFloat("maxTime", float.Parse(maxTime.text, CultureInfo.InvariantCulture.NumberFormat));
         PlayerPrefs.SetFloat("minTime", float.Parse(minTime.text, CultureInfo.InvariantCulture.NumberFormat));
 
+        PlayerPrefs.SetFloat("badValue", float.Parse(badValue.text, CultureInfo.InvariantCulture.NumberFormat));
+        PlayerPrefs.SetFloat("hardValue", float.Parse(hardValue.text, CultureInfo.InvariantCulture.NumberFormat));
+        PlayerPrefs.SetFloat("goodValue", float.Parse(goodValue.text, CultureInfo.InvariantCulture.NumberFormat));
+        PlayerPrefs.SetFloat("greatValue", float.Parse(greatValue.text, CultureInfo.InvariantCulture.NumberFormat));
+        
+        PlayerPrefs.SetInt("windowAutoControl", windowAutoControl.isOn ? 1 : 0);
+
         //Performance
         PlayerPrefs.SetInt("targetFPS", int.Parse(targetFPS.text, CultureInfo.InvariantCulture.NumberFormat));
         PlayerPrefs.SetInt("noSecond", noSecond.isOn ? 1 : 0);
@@ -66,13 +81,20 @@ public class SettingManager : MonoBehaviour
         if (PlayerPrefs.HasKey("maxTime")) maxTime.text = PlayerPrefs.GetFloat("maxTime").ToString(); else maxTime.text = "3600";
         if (PlayerPrefs.HasKey("minTime")) minTime.text = PlayerPrefs.GetFloat("minTime").ToString(); else minTime.text = "300";
 
+        if (PlayerPrefs.HasKey("badValue")) badValue.text = PlayerPrefs.GetFloat("badValue").ToString(); else badValue.text = "4";
+        if (PlayerPrefs.HasKey("hardValue")) hardValue.text = PlayerPrefs.GetFloat("hardValue").ToString(); else badValue.text = "2";
+        if (PlayerPrefs.HasKey("goodValue")) goodValue.text = PlayerPrefs.GetFloat("goodValue").ToString(); else goodValue.text = "1";
+        if (PlayerPrefs.HasKey("greatValue")) greatValue.text = PlayerPrefs.GetFloat("greatValue").ToString(); else greatValue.text = "2";
+
+        windowAutoControl.isOn = Int2Bool(PlayerPrefs.GetInt("windowAutoControl")); if (PlayerPrefs.HasKey("windowAutoControl") == false) windowAutoControl.isOn = true;
+
         //Performance
         if (PlayerPrefs.HasKey("targetFPS")) targetFPS.text = PlayerPrefs.GetInt("targetFPS").ToString(); else targetFPS.text = "90";
         noSecond.isOn = Int2Bool(PlayerPrefs.GetInt("noSecond"));
 
         //optionals
-        plantMode.isOn = Int2Bool(PlayerPrefs.GetInt("plantMode"));
-        plantMode.isOn = Int2Bool(PlayerPrefs.GetInt("cabbageFactory"));
+        plantMode.isOn = Int2Bool(PlayerPrefs.GetInt("plantMode")); if (PlayerPrefs.HasKey("plantMode") == false) windowAutoControl.isOn = false;
+        plantMode.isOn = Int2Bool(PlayerPrefs.GetInt("cabbageFactory")); if (PlayerPrefs.HasKey("cabbageFactory") == false) windowAutoControl.isOn = true;
 
         Debug.Log("LoadPref");
     }
@@ -93,9 +115,11 @@ public class SettingManager : MonoBehaviour
     {
         switch(setting)
         {
+            //General
             case "volume":
                 return volume.value;
-                
+            
+            //Timer
             case "startDuration":
                 return float.Parse(startDuration.text, CultureInfo.InvariantCulture.NumberFormat);
                
@@ -108,9 +132,22 @@ public class SettingManager : MonoBehaviour
             case "minTime":
                 return float.Parse(minTime.text, CultureInfo.InvariantCulture.NumberFormat);
             
+            //Rating Value
+            case "badValue":
+                return int.Parse(badValue.text, CultureInfo.InvariantCulture.NumberFormat);
+
+            case "hardValue":
+                return int.Parse(hardValue.text, CultureInfo.InvariantCulture.NumberFormat);
+
+            case "goodValue":
+                return int.Parse(goodValue.text, CultureInfo.InvariantCulture.NumberFormat);
+
+            case "greatValue":
+                return int.Parse(greatValue.text, CultureInfo.InvariantCulture.NumberFormat);
+
+            //Performance
             case "targetFPS":
                 return int.Parse(targetFPS.text, CultureInfo.InvariantCulture.NumberFormat);
-
 
             default:
                 Debug.LogError("Can't get pref");
@@ -125,6 +162,13 @@ public class SettingManager : MonoBehaviour
         timer.restTime = GetPref("restTime");
         timer.maxTime = GetPref("maxTime");
         timer.minTime = GetPref("minTime");
+
+        timer.badDivider = GetPref("badValue");
+        timer.hardDivider = GetPref("hardValue");
+        timer.goodMultiplier = GetPref("goodValue");
+        timer.greatMultiplier = GetPref("greatValue");
+
+        WindowControl.enabled = windowAutoControl.isOn;
 
         //Performance
         fpsManager.targetFPS = (int)GetPref("targetFPS");

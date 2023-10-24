@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3041205733567027668}
   - component: {fileID: 9222343702517314080}
   - component: {fileID: 5756728472223778906}
+  - component: {fileID: -8934704926606697793}
   m_Layer: 0
   m_Name: CabbageYellow
   m_TagString: Untagged
@@ -148,3 +149,19 @@ CircleCollider2D:
   m_Offset: {x: 0.04, y: -0.03}
   serializedVersion: 2
   m_Radius: 0.35
+--- !u!114 &-8934704926606697793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 722641917909962770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfde8c3f9935fa9418ec89e98cd1850f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minX: -500
+  maxX: 500
+  minY: -200
+  maxY: 200
