@@ -76,6 +76,7 @@ public class Timer : MonoBehaviour
         sessionDuration = currentTime;
         previousDuration = sessionDuration;
 
+        SleepManager.AllowSleep();
         GetComponent();
     }
 
@@ -101,7 +102,7 @@ public class Timer : MonoBehaviour
         switch (currentState) 
         {
             case State.focus:
-                {
+                {   
                     currentTime -= Time.deltaTime;
                     if (currentTime < 0)
                     {
@@ -125,7 +126,7 @@ public class Timer : MonoBehaviour
                         alarmer.PlaySound("restend");
                         WindowControl.ShowWindow();
                         currentTime = sessionDuration;
-                        currentState = State.focus;
+                        SetState(State.focus);
                     }
                     break;
                 }
@@ -184,20 +185,39 @@ public class Timer : MonoBehaviour
         }
     }
 
+    void SetState(State state)
+    {
+        currentState = state;
+
+        switch (state)
+        {
+            case State.focus:
+                SleepManager.DontSleep();
+                break;
+            case State.rest:
+                SleepManager.DontSleep();
+                break;
+
+            default:
+                SleepManager.AllowSleep();
+                break;
+        }
+    }
+
     public void ToggleTimer()
     {
         switch(currentState)
         {
             case State.focus:
                 previousState = State.focus;
-                currentState = State.pause;
+                SetState(State.pause);
                 break;
             case State.rest:
                 previousState = State.rest;
-                currentState = State.pause;
+                SetState(State.pause);
                 break;
             case State.pause:
-                currentState = previousState;
+                SetState(previousState);
                 previousState = State.pause;
                 break;
         }
@@ -205,23 +225,26 @@ public class Timer : MonoBehaviour
     public void ToggleTimer(State state)
     {
         previousState = currentState;
-        currentState = state;
+        SetState(state);
     }
+
     public void ResetTimer()
     {
         alarmer.StopSound();
-        currentState = State.pause;
+        SetState(State.pause);
         currentTime = startDuration;
         sessionDuration = currentTime;
         sessionCount = 0;
     }
+
     public void ResetTimer(float nextTime)
     {
         alarmer.StopSound();
-        currentState = State.pause;
+        SetState(State.pause);
         currentTime = nextTime;
         sessionDuration = currentTime;
         sessionCount = 0;
+
     }
 
     void Continue(State state)

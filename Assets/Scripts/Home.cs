@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -45,6 +46,9 @@ public class Home : MonoBehaviour
         timer.ToggleTimer(Timer.State.focus);
 
         surprise.SetActive(false);
+
+        Resources.UnloadUnusedAssets();
+        GC.Collect();
     }
 
     public void ReturnHome()
@@ -54,6 +58,9 @@ public class Home : MonoBehaviour
         timerScreen.enabled = false;
         ratingScreen.enabled = false;
         settingScreen.enabled = false;
+
+        Resources.UnloadUnusedAssets();
+        GC.Collect();
 
         switch (KinEvent.theDay)
         {
